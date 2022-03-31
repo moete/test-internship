@@ -1,0 +1,68 @@
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <div class="input-group">
+    <div class="form-outline">
+      <label class="form-label" for="search">Search</label>
+      <input
+        type="text"
+        [(ngModel)]="searchValue"
+        id="search"
+        class="form-control"
+      />
+    </div>
+  </div>
+  <table class="table table-hover">
+    <tbody>
+      <tr *ngFor="let album of albums | searchFilter: searchValue">
+        <td><img src="{{ album.photo }}" /></td>
+        <div class="card-body">
+          <h5 class="card-title">{{ album.author }}</h5>
+          <p class="card-text">{{ album.text }}</p>
+
+          <button
+            *ngIf="album.fav === false"
+            type="button"
+            class="btn btn-info"
+            (click)="addToFav(album)"
+          >
+            Add to fav
+          </button>
+          <button
+            *ngIf="album.fav === true"
+            type="button"
+            class="btn btn-danger"
+            (click)="removeFromFav(album)"
+          >
+            Delete from fav
+          </button>
+        </div>
+      </tr>
+    </tbody>
+  </table>
+  <!-- sinner -->
+  <div class="row pb-5">
+    <div class="col-md-12 p-5">
+      <ngx-spinner
+        bdOpacity="0.9"
+        bdColor=""
+        size="default"
+        color="#581f87"
+        type="ball-pulse-sync"
+        [fullScreen]="false"
+      >
+      </ngx-spinner>
+    </div>
+  </div>
+  <!-- Alert no more post -->
+  <div *ngIf="!notEmptyPost" class="row pb-5">
+    <div class="col-md-12 d-flex justify-content-center">
+      <div class="text-muted h6 alert alert-secondary p-2">
+        No more items to show
+      </div>
+    </div>
+  </div>
+</div>
